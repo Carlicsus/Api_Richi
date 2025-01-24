@@ -18,3 +18,9 @@ class User(BaseModel):
   apellido: str
   genero: Genero
   roles: List[Role]
+  
+class UserUpdate(BaseModel):
+  nombre: Optional[str]
+  apellido: Optional[str]
+  genero: Optional[Genero]
+  roles: Optional[List[Role]]

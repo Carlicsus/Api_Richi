@@ -2,7 +2,7 @@
 from typing import List
 from uuid import uuid4, UUID
 from fastapi import FastAPI, HTTPException
-from models import Genero,User,Role
+from models import Genero,User,Role, UserUpdate
 
 
 app = FastAPI();
@@ -60,4 +60,21 @@ async def delete_user(id: UUID):
       return
     raise HTTPException(
       status_code=404, detail=f'Error al eliminar, id{id} no encontrado'
+    )
+    
+@app.put('/api/users/{id}')
+async def update_user(user_update:UserUpdate, id: UUID):
+  for user in db:
+    if user.id == id:
+      if user_update.nombre is not None:
+        user.nombre = user_update.nombre
+      if user_update.apellido is not None:
+        user.apellido = user_update.apellido
+      if user_update.genero is not None:
+        user.genero = user_update.genero
+      if user_update.roles is not None:
+        user.roles = user_update.roles
+      return user.id
+    raise HTTPException(
+      status_code=404, detail=f'Error al actualizar, id{id} no encontrado'
     )
